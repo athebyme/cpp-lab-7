@@ -1,5 +1,5 @@
-#ifndef CPP_LAB_5_APP_H
-#define CPP_LAB_5_APP_H
+#ifndef CPP_LAB_7_APP_H
+#define CPP_LAB_7_APP_H
 #include "Service/DisplayServiceInterface.h"
 
 class App {

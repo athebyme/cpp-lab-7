@@ -8,115 +8,55 @@ namespace CircularBuffer{
     public:
         using iterator_category = std::random_access_iterator_tag;
         using value_type = T;
-        using difference_type = ptrdiff_t;
+        using difference_type = std::ptrdiff_t;
         using pointer = const T*;
         using reference = const T&;
 
-        const_iterator() = default;
-        const_iterator(const CircularBuffer<T>* buffer, size_t index)
-                : buffer_(buffer), index_(index)
-        {
-        }
+        const_iterator(const CircularBuffer& buffer, size_t index) :
+                buffer_(buffer),
+                index_(index)
+        {}
 
-        reference operator*() const
-        {
-            return buffer_->at(index_);
-        }
+        const_iterator(const const_iterator& other) = default;
+        const_iterator(const iterator& other) :
+                buffer_(other.buffer_),
+                index_(other.index_)
+        {}
 
-        pointer operator->() const
-        {
-            return &buffer_->at(index_);
-        }
-
-        const_iterator& operator++()
-        {
-            index_ = (index_ + 1) % buffer_->size();
+        const_iterator& operator=(const const_iterator& other) = default;
+        const_iterator& operator=(const iterator& other) {
+            buffer_ = other.buffer_;
+            index_ = other.index_;
             return *this;
         }
 
-        const_iterator operator++(int)
-        {
-            const_iterator tmp = *this;
-            ++(*this);
-            return tmp;
-        }
+        reference operator*() const { return buffer_[index_]; }
+        pointer operator->() const { return &buffer_[index_]; }
 
-        const_iterator& operator--()
-        {
-            index_ = (index_ + buffer_->size() - 1) % buffer_->size();
-            return *this;
-        }
+        const_iterator& operator++() { ++index_; return *this; }
+        const_iterator operator++(int) { const_iterator temp = *this; ++index_; return temp; }
+        const_iterator& operator--() { --index_; return *this; }
+        const_iterator operator--(int) { const_iterator temp = *this; --index_; return temp; }
 
-        const_iterator operator--(int)
-        {
-            const_iterator tmp = *this;
-            --(*this);
-            return tmp;
-        }
+        const_iterator& operator+=(difference_type n) { index_ += n; return *this; }
+        const_iterator operator+(difference_type n) const { return const_iterator(buffer_, index_ + n); }
+        friend const_iterator operator+(difference_type n, const const_iterator& it) { return const_iterator(it.buffer_, n + it.index_); }
+        const_iterator& operator-=(difference_type n) { index_ -= n; return *this; }
+        const_iterator operator-(difference_type n) const { return const_iterator(buffer_, index_ - n); }
+        difference_type operator-(const const_iterator& other) const { return index_ - other.index_; }
 
-        const_iterator& operator+=(difference_type n)
-        {
-            index_ = (index_ + n) % buffer_->size();
-            return *this;
-        }
+        reference operator[](difference_type n) const { return buffer_[index_ + n]; }
 
-        const_iterator operator+(difference_type n) const
-        {
-            const_iterator tmp = *this;
-            return tmp += n;
-        }
-
-        const_iterator& operator-=(difference_type n)
-        {
-            index_ = (index_ + buffer_->size() - n) % buffer_->size();
-            return *this;
-        }
-
-        const_iterator operator-(difference_type n) const
-        {
-            const_iterator tmp = *this;
-            return tmp -= n;
-        }
-
-        difference_type operator-(const const_iterator& other) const
-        {
-            return static_cast<difference_type>(index_) - static_cast<difference_type>(other.index_);
-        }
-
-        bool operator==(const const_iterator& other) const
-        {
-            return buffer_ == other.buffer_ && index_ == other.index_;
-        }
-
-        bool operator!=(const const_iterator& other) const
-        {
-            return !(*this == other);
-        }
-
-        bool operator<(const const_iterator& other) const
-        {
-            return buffer_ == other.buffer_ && index_ < other.index_;
-        }
-
-        bool operator>(const const_iterator& other) const
-        {
-            return buffer_ == other.buffer_ && index_ > other.index_;
-        }
-
-        bool operator<=(const const_iterator& other) const
-        {
-            return buffer_ == other.buffer_ && index_ <= other.index_;
-        }
-
-        bool operator>=(const const_iterator& other) const
-        {
-            return buffer_ == other.buffer_ && index_ >= other.index_;
-        }
+        bool operator==(const const_iterator& other) const { return index_ == other.index_; }
+        bool operator!=(const const_iterator& other) const { return index_ != other.index_; }
+        bool operator<(const const_iterator& other) const { return index_ < other.index_; }
+        bool operator<=(const const_iterator& other) const { return index_ <= other.index_; }
+        bool operator>(const const_iterator& other) const { return index_ > other.index_; }
+        bool operator>=(const const_iterator& other) const { return index_ >= other.index_; }
 
     private:
-        const CircularBuffer<T>* buffer_ = nullptr;
-        size_t index_ = 0;
+        const CircularBuffer& buffer_;
+        size_t index_;
     };
-
 }
 #endif
