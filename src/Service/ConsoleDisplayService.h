@@ -1,5 +1,5 @@
-#ifndef CPP_LAB_5_CONSOLEDISPLAYSERVICE_H
-#define CPP_LAB_5_CONSOLEDISPLAYSERVICE_H
+#ifndef CPP_LAB_2_CONSOLEDISPLAYSERVICE_H
+#define CPP_LAB_2_CONSOLEDISPLAYSERVICE_H
 
 #include <exception>
 #include "DisplayServiceInterface.h"

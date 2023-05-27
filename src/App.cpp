@@ -1,13 +1,25 @@
+#include <iostream>
 #include "App.h"
 #include "Service/ExceptionService.h"
+#include "../src/CircularBuffer/Classes/CircularBuffer.h"
 using namespace std;
 int App::start() {
-    try {
+    CircularBuffer::CircularBuffer<int> buffer(5);
+    buffer.push(1);
+    buffer.push(2);
+    buffer.push(3);
 
-    }catch (std::exception const &e) {
-        this->displayService->displayError(e);
-        return -1;
+    std::cout << "Size: " << buffer.size() << std::endl;
+    std::cout << "Front: " << buffer.front() << std::endl;
+    std::cout << "Back: " << buffer.back() << std::endl;
+
+    try{
+        buffer.pop();
+    }catch (exception &e){
+        displayService->displayError(e);
     }
+
+
     return 0;
 }
 

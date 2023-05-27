@@ -5,9 +5,10 @@
 #include <exception>
 namespace CustomExceptions {
     class BufferIsFull : std::exception{
-    [[nodiscard]] const char *what() const noexcept override {
-        return "ЧЗХ";
+        const char *what() const noexcept override {
+            return "ЧЗХ";
     }
+};
 }
 
 #endif
