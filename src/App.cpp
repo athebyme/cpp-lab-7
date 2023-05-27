@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Service/ExceptionService.h"
 #include "../src/CircularBuffer/Classes/CircularBuffer.h"
+#include <algorithm>
 using namespace std;
 int App::start() {
     CircularBuffer::CircularBuffer<int> buffer(5);
@@ -12,6 +13,9 @@ int App::start() {
     std::cout << "Size: " << buffer.size() << std::endl;
     std::cout << "Front: " << buffer.front() << std::endl;
     std::cout << "Back: " << buffer.back() << std::endl;
+
+    std::sort(buffer.begin(), buffer.end());
+
 
     try{
         buffer.pop();

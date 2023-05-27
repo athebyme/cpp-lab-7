@@ -38,12 +38,12 @@ namespace CircularBuffer{
         class iterator;
         class const_iterator;
 
-        iterator begin();
-        const_iterator begin() const;
-        iterator end();
-        const_iterator end() const;
-        const_iterator cbegin() const;
-        const_iterator cend() const;
+        iterator begin() { return iterator(*this, 0); }
+        const_iterator begin() const { return const_iterator(*this, 0); }
+        iterator end() { return iterator(*this, size_); }
+        const_iterator end() const { return const_iterator(*this, size_); }
+        const_iterator cbegin() const { return const_iterator(*this, 0); }
+        const_iterator cend() const { return const_iterator(*this, size_); }
 
     private:
         std::vector<T> data_;
@@ -52,8 +52,6 @@ namespace CircularBuffer{
         size_t head_;
         size_t tail_;
     };
-
-
 }
 
 #endif
